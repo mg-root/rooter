@@ -1,1 +1,2 @@
-Package Python par MG
+Python Package: rooter
+Author: MG
