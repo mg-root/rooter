@@ -5,6 +5,7 @@ setup(
     description="Python Package",
     version='1.0.0',
     author='MG',
+    author_email='m.gedaliah57@gmail.com',
     url='https://github.com/mg-project0/mg',
     python_requires=">=3.11",
     packages=find_packages(),
