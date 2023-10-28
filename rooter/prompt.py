@@ -2,7 +2,7 @@ from rooter import rooter, print
 import builtins
 
 class Prompt:
-    def __init__(self, text, default=None, type=str, choices=None, between=None, color_input='', invalid_input_text='Incorrect input.'):
+    def __init__(self, text, default=None, type=str, choices=None, between=None, color_input='', invalid_input_text='<red>Incorrect input.</>'):
         self.__text = text
         self.__default = default
         self.__type = type
@@ -41,4 +41,4 @@ class Prompt:
                 else:
                     return prompt
             else:
-                print(self.__invalid_input_text, styles='red')
+                print(self.__invalid_input_text)

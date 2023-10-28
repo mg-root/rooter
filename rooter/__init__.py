@@ -1,13 +1,12 @@
-import builtins, os
+from rooter.stack import Stack
+import builtins, os, re
 
 # class: Rooter
 class Rooter:
     def __init__(self):
         self.reset = '\033[0m'
 
-        self.tags = [
-            {'start': '<reset>', 'end': '</reset>', 'value': self.reset}
-        ]
+        self.tags = {}
 
         self.styles = {
             'b': '\033[1m',
@@ -20,6 +19,7 @@ class Rooter:
 
         self.colors = {
             'black': '\033[30m',
+            'grey': '\033[38;2;169;169;169m',
             'red': '\033[31m',
             'green': '\033[32m',
             'yellow': '\033[33m',
@@ -40,23 +40,23 @@ class Rooter:
         }
 
         for name, style in self.styles.items():
-            self.tags.append({'start': f'<{name}>', 'end': f'</{name}>', 'value': style})
+            self.tags[name] = style
 
         for name, color in self.colors.items():
-            self.tags.append({'start': f'<{name}>', 'end': f'</{name}>', 'value': color})
+            self.tags[name] = color
 
     def addColor(self, name, hex=False, rgb=False):
         if name in self.colors:
-            raise ValueError('This color already exists.')
+            print(f'<red>This color name <yellow>{name}</> already exists.</>')
         elif hex:
             hex_color = hex.lstrip('#')
             color = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
             self.colors[name] = f'\033[38;2;{color[0]};{color[1]};{color[2]}m'
-            self.tags.append({'start': f'<{name}>', 'end': f'</{name}>', 'value': self.colors[name]})
+            self.tags[name] = f'\033[38;2;{color[0]};{color[1]};{color[2]}m'
         elif rgb:
             r,g,b = rgb
             self.colors[name] = f'\033[38;2;{r};{g};{b}m'
-            self.tags.append({'start': f'<{name}>', 'end': f'</{name}>', 'value': self.colors[name]})
+            self.tags[name] = f'\033[38;2;{r};{g};{b}m'
 
     def getColor(self, name):
         return self.colors[name] if name in self.colors else ''
@@ -64,17 +64,24 @@ class Rooter:
 rooter = Rooter()
 
 # function: print
-def print(message, styles=False):
+def print(message):
     if isinstance(message, str):
-        for tag in rooter.tags:
-            while tag['start'] in message:
-                start_index = message.find(tag['start']) + len(tag['start'])
-                if tag['end'] in message:
-                    end_index = message.find(tag['end'])
-                    edit = message[start_index:end_index]
-                    message = message.replace(tag['start'] + edit + tag['end'], tag['value'] + edit + rooter.reset)
+        previous_styles = Stack()
+        pattern = re.compile(r'<(.*?)>')
+        for match in pattern.finditer(message):
+            tag = match.group(1)
+            previous_styles.stack(tag) if tag != '/' else None
+            if tag == '/':
+                tag_depile = previous_styles.depile()
+                if not previous_styles.isEmpty():
+                    colors = '' if tag_depile not in rooter.styles else rooter.reset
+                    for color in previous_styles.show():
+                        colors += rooter.tags.get(color)
+                    message = message.replace(f"<{tag}>", colors, 1)
                 else:
-                    message = message.replace(tag['start'] + message[start_index], tag['value'] + message[start_index])
+                    message = message.replace(f"<{tag}>", rooter.reset, 1)
+            else:
+                message = message.replace(f"<{tag}>", rooter.tags.get(tag), 1)
     elif isinstance(message, bool):
         message = rooter.colors['green'] + rooter.styles['i'] + str(message) + rooter.reset if message else rooter.colors['red'] + rooter.styles['i'] + str(message) + rooter.reset
     elif message == None:
@@ -82,19 +89,26 @@ def print(message, styles=False):
     elif isinstance(message, float) or isinstance(message, int):
         message = rooter.colors['cyan'] + str(message) + rooter.reset
 
-    if styles:
-        style_to_add = ""
-        for style, value in rooter.styles.items():
-            if style in styles.split(' '):
-                style_to_add += value
-
-        for color, value in rooter.colors.items():
-            if color in styles.split(' '):
-                style_to_add += value
-
-        message = style_to_add + message + rooter.reset
-
     builtins.print(message)
+
+def formatText(message):
+    previous_styles = Stack()
+    pattern = re.compile(r'<(.*?)>')
+    for match in pattern.finditer(message):
+        tag = match.group(1)
+        previous_styles.stack(tag) if tag != '/' else None
+        if tag == '/':
+            tag_depile = previous_styles.depile()
+            if not previous_styles.isEmpty():
+                colors = '' if tag_depile not in rooter.styles else rooter.reset
+                for color in previous_styles.show():
+                    colors += rooter.tags.get(color)
+                    message = message.replace(f"<{tag}>", colors, 1)
+            else:
+                message = message.replace(f"<{tag}>", rooter.reset, 1)
+        else:
+            message = message.replace(f"<{tag}>", rooter.tags.get(tag), 1)
+    return message
 
 # function: clear
 def clear():
