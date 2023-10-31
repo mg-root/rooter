@@ -1,4 +1,4 @@
-from rooter import rooter
+from rooter import rooter, formatText, getLengthWithoutTags
 
 class Panel:
     def __init__(self, title=None, title_color='', text="Panel", color='', border_color='', min_size=None):
@@ -27,19 +27,9 @@ class Panel:
         panel[0] = self.__border_color + panel[0] + rooter.reset
 
         for text in self.__text.split('\n'):
-            text_length = len(text)
+            text_length = getLengthWithoutTags(text)
             text = self.__color + text + rooter.reset
-            for tag in rooter.tags:
-                while tag['start'] in text:
-                    start_index = text.find(tag['start']) + len(tag['start'])
-                    text_length -= len(tag['start'])
-                    if tag['end'] in text:
-                        text_length -= len(tag['end'])
-                        end_index = text.find(tag['end'])
-                        edit = text[start_index:end_index]
-                        text = text.replace(tag['start'] + edit + tag['end'], tag['value'] + edit + rooter.reset)
-                    else:
-                        text = text.replace(tag['start'] + text[start_index], tag['value'] + text[start_index])
+            text = formatText(text)
             panel.append(f'{self.__border_color}│{rooter.reset} ' + text + ' ' * (length - text_length) + f' {self.__border_color}│{rooter.reset}')
         panel.append(f'{self.__border_color}╰' + '─' * (length + 2) + '╯' + rooter.reset)
 

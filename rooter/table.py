@@ -1,8 +1,9 @@
 from rooter import rooter
 
 class Table:
-    def __init__(self, title=None):
+    def __init__(self, title=None, border=False):
         self.__title = title
+        self.__border = border
         self.__columns = []
         self.__rows = []
 
@@ -68,6 +69,13 @@ class Table:
                 content += ' ' + self.__rows[i][element] + ' ' * (length_columns[element] - len(self.__rows[i][element]) - 1) + '│'
             table.append(content)
 
+            if self.__border and i != len(self.__rows) - 1:
+                content = '├'
+                for element in range(len(self.__rows[i])):
+                    content += '─' * length_columns[element]
+                    content += '┼' if element != len(self.__rows[i]) - 1 else '┤'
+                table.append(content)
+
         # Creation of bottom
         bottom = '└'
         for i in range(len(length_columns)):
@@ -77,7 +85,7 @@ class Table:
 
         # Creation of title
         if self.__title:
-            half = (len(table[0]) - len(self.__title) - 2) // 2
+            half = (len(table[0]) - len(self.__title)) // 2
             table.insert(0, ' ' * half + self.__title)
 
         return '\n'.join(table)

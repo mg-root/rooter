@@ -1,1 +1,0 @@
-from rooter import print

@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: rooter
+Version: 1.0.0
+Summary: Python Package
+Home-page: https://github.com/mg-project0/rooter
+Author: MG
+Author-email: m.gedaliah57@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Idependent
+Requires-Python: >=3.10

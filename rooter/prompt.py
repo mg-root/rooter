@@ -13,8 +13,8 @@ class Prompt:
 
     def ask(self):
         while True:
-            default = rooter.colors['cyan'] + f" [Default: {self.__default}]" + rooter.reset if self.__default else ''
-            choice = rooter.colors['purple'] + f" [Choices: {' / '.join(self.__choices)}]" + rooter.reset if self.__choices else ''
+            default = rooter.getColor('cyan') + f" [Default: {self.__default}]" + rooter.reset if self.__default else ''
+            choice = rooter.getColor('purple') + f" [Choices: {' / '.join(self.__choices)}]" + rooter.reset if self.__choices else ''
             prompt = input(f"{self.__text}{default}{choice} : {self.__color_input}")
             builtins.print(rooter.reset, end='')
 

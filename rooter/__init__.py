@@ -1,5 +1,5 @@
 from rooter.stack import Stack
-import builtins, os, re
+import builtins, os, re, sys
 
 # class: Rooter
 class Rooter:
@@ -9,12 +9,12 @@ class Rooter:
         self.tags = {}
 
         self.styles = {
-            'b': '\033[1m',
+            'bold': '\033[1m',
             'dim': '\033[2m',
-            'i': '\033[3m',
-            'u': '\033[4m',
-            's': '\033[9m',
-            'r': '\033[7m'
+            'italic': '\033[3m',
+            'underline': '\033[4m',
+            'strikethough': '\033[9m',
+            'reverse': '\033[7m'
         }
 
         self.colors = {
@@ -60,6 +60,9 @@ class Rooter:
 
     def getColor(self, name):
         return self.colors[name] if name in self.colors else ''
+    
+    def getStyle(self, name):
+        return self.styles[name] if name in self.styles else ''
 
 rooter = Rooter()
 
@@ -75,7 +78,7 @@ def print(message):
                 tag_depile = previous_styles.depile()
                 if not previous_styles.isEmpty():
                     colors = '' if tag_depile not in rooter.styles else rooter.reset
-                    for color in previous_styles.show():
+                    for color in previous_styles.get():
                         colors += rooter.tags.get(color)
                     message = message.replace(f"<{tag}>", colors, 1)
                 else:
@@ -83,13 +86,21 @@ def print(message):
             else:
                 message = message.replace(f"<{tag}>", rooter.tags.get(tag), 1)
     elif isinstance(message, bool):
-        message = rooter.colors['green'] + rooter.styles['i'] + str(message) + rooter.reset if message else rooter.colors['red'] + rooter.styles['i'] + str(message) + rooter.reset
+        message = rooter.getColor('green') + rooter.getStyle('italic') + str(message) + rooter.reset if message else rooter.getColor('red') + rooter.getStyle('italic') + str(message) + rooter.reset
     elif message == None:
-        message = rooter.colors['purple'] + rooter.styles['i'] + str(message) + rooter.reset
+        message = rooter.getColor('purple') + rooter.getStyle('italic') + str(message) + rooter.reset
     elif isinstance(message, float) or isinstance(message, int):
-        message = rooter.colors['cyan'] + str(message) + rooter.reset
+        message = rooter.getColor('cyan') + str(message) + rooter.reset
 
     builtins.print(message)
+
+def getLengthWithoutTags(message):
+    length = 0
+    pattern = re.compile(r'<(.*?)>')
+    for match in pattern.finditer(message):
+        tag = match.group(1)
+        length += len(f'<{tag}>')
+    return len(message) - length
 
 def formatText(message):
     previous_styles = Stack()
@@ -101,7 +112,7 @@ def formatText(message):
             tag_depile = previous_styles.depile()
             if not previous_styles.isEmpty():
                 colors = '' if tag_depile not in rooter.styles else rooter.reset
-                for color in previous_styles.show():
+                for color in previous_styles.get():
                     colors += rooter.tags.get(color)
                     message = message.replace(f"<{tag}>", colors, 1)
             else:
@@ -113,3 +124,7 @@ def formatText(message):
 # function: clear
 def clear():
     os.system('cls')
+
+# function: exit
+def exit():
+    sys.exit()

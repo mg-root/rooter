@@ -12,5 +12,5 @@ class Stack:
         if not self.isEmpty():
             return self.__stack.pop()
         
-    def show(self):
+    def get(self):
         return self.__stack
