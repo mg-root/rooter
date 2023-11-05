@@ -21,12 +21,12 @@ class Menu:
     def show(self):
         text = ''
         for i in range(len(self.__data)):
-            text += f"[<{self.__color_index}>{i+1}</{self.__color_index}>] {self.__data[i]}" if self.__color_index != '' else f"[{i+1}] {self.__data[i]}"
+            text += f"[<{self.__color_index}>{i+1}</>] {self.__data[i]}" if self.__color_index != '' else f"[{i+1}] {self.__data[i]}"
             text += '\n' if i != len(self.__data) - 1 else ''
 
         menu = Panel(title=self.__title, title_color=self.__title_color, text=text, color=self.__color, border_color=self.__border_color, min_size=self.__min_size)
         return print(menu)
     
     def ask(self):
-        item = Prompt(text="Choice", type=int, color_input=self.__color_index, between=f'1-{len(self.__data)}', invalid_input_text=f"You have to input a number between <yellow><b>[1]</b><red> and <yellow><b>[{len(self.__data)}]</b><red>.</red>").ask()
+        item = Prompt(text="Choice", type=int, color_input=self.__color_index, between=f'1-{len(self.__data)}', invalid_input_text=f"<red>You have to input a number between <yellow><bold>[1]</></></> and <yellow><bold>[{len(self.__data)}]</></></><red>.</>\n").ask()
         return item - 1

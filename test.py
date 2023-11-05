@@ -1,10 +1,4 @@
-from rooter.database import Model, JsonDatabase
+from rooter import GroupDigits
 
-users_model = Model('users', {
-    'id': {'type': 'int', 'auto_increment': True},
-    'username': {'type': 'str'},
-    'money': {'type': 'int', 'default': 10}
-})
-users_model.create()
-
-db = JsonDatabase(table_name='users')
+a = GroupDigits(10000)
+print(a)

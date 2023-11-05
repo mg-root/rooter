@@ -10,7 +10,7 @@ class Panel:
         self.__min_size = min_size
 
     def __str__(self):
-        length = len(max(self.__text.split('\n')))
+        length = len(max(self.__text.split('\n'), key=len))
         if self.__min_size and self.__min_size > length:
             length = self.__min_size
 

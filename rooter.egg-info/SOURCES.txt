@@ -6,6 +6,7 @@ rooter/download.py
 rooter/grid.py
 rooter/menu.py
 rooter/panel.py
+rooter/password.py
 rooter/progress.py
 rooter/prompt.py
 rooter/stack.py

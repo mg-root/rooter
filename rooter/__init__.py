@@ -94,6 +94,7 @@ def print(message):
 
     builtins.print(message)
 
+# function: getLengthWithoutTags
 def getLengthWithoutTags(message):
     length = 0
     pattern = re.compile(r'<(.*?)>')
@@ -102,6 +103,7 @@ def getLengthWithoutTags(message):
         length += len(f'<{tag}>')
     return len(message) - length
 
+# function: formatText
 def formatText(message):
     previous_styles = Stack()
     pattern = re.compile(r'<(.*?)>')
@@ -120,6 +122,14 @@ def formatText(message):
         else:
             message = message.replace(f"<{tag}>", rooter.tags.get(tag), 1)
     return message
+
+# function: GroupDigits
+def GroupDigits(number, separator=None):
+    formatted = '{:,}'.format(number)
+    if separator:
+        return formatted.replace(',', separator)
+    else:
+        return formatted.replace(',', ' ')
 
 # function: clear
 def clear():

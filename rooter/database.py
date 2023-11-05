@@ -94,9 +94,11 @@ class JsonDatabase:
                 
         if where:
             where, operator = self.__condition(where)
-            where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
+
             if where[0] not in self.__model:
                 raise ValueError(formatText(f"<red>This key <yellow>{where[0]}</> isn't correct.</>"))
+            
+            where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
             
             index_list = []
             for i in range(len(data)):
@@ -163,9 +165,11 @@ class JsonDatabase:
 
         if where:
             where, operator = self.__condition(where)
-            where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
+
             if where[0] not in self.__model:
                 raise ValueError(formatText(f"<red>This key <yellow>{where[0]}</> isn't correct.</>"))
+            
+            where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
             
             index_list = []
             for i in range(len(data)):
@@ -193,7 +197,7 @@ class JsonDatabase:
             for i in index_list:
                 got_data.append(data[i])
 
-            return got_data if len(got_data) > 1 else got_data[0]
+            return got_data
         else:
             return data
 
@@ -244,9 +248,11 @@ class JsonDatabase:
         data = self.__loadData()
 
         where, operator = self.__condition(where)
-        where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
+
         if where[0] not in self.__model:
             raise ValueError(formatText(f"<red>This key <yellow>{where[0]}</> isn't correct.</>"))
+        
+        where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
             
         index_list = []
         for i in range(len(data)):
@@ -286,9 +292,11 @@ class JsonDatabase:
         data = self.__loadData()
         
         where, operator = self.__condition(where)
-        where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
+
         if where[0] not in self.__model:
             raise ValueError(formatText(f"<red>This key <yellow>{where[0]}</> isn't correct.</>"))
+        
+        where[1] = int(where[1]) if self.__model[where[0]]['type'] == 'int' else float(where[1]) if self.__model[where[0]]['type'] == 'float' else where[1] 
             
         index_list = []
         for i in range(len(data)):
@@ -328,17 +336,17 @@ class JsonDatabase:
 
     def __condition(self, text):
         if '>=' in text:
-            return [element.replace(' ', '') for element in text.split('>=')], '>='
+            return [element.strip() for element in text.split('>=')], '>='
         elif '<=' in text:
-            return [element.replace(' ', '') for element in text.split('<=')], '<='
+            return [element.strip() for element in text.split('<=')], '<='
         elif '>' in text:
-            return [element.replace(' ', '') for element in text.split('>')], '>'
+            return [element.strip() for element in text.split('>')], '>'
         elif '<' in text:
-            return [element.replace(' ', '') for element in text.split('<')], '<'
+            return [element.strip() for element in text.split('<')], '<'
         elif '!=' in text:
-            return [element.replace(' ', '') for element in text.split('!=')], '!='
+            return [element.strip() for element in text.split('!=')], '!='
         elif '=' in text:
-            return [element.replace(' ', '') for element in text.split('=')], '='
+            return [element.strip() for element in text.split('=')], '='
         else:
             raise ValueError(formatText(f"<red>There is a problem with your condition: <yellow>{text}</>.</>"))
 
