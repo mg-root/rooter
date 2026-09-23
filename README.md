@@ -1,4 +1,4 @@
-<h1 align="center">📦 rooter</h1>
+<h1 align="center">📦 rooter-lib</h1>
 
 <p align="center">
   Une boîte à outils Python légère pour donner un vrai look à vos scripts terminal.<br/>
@@ -42,9 +42,9 @@
 
 ## 🎯 Contexte
 
-**rooter** est une bibliothèque Python que j'ai développée pour répondre à un besoin récurrent dans mes projets terminal : afficher des informations de manière **lisible et esthétique**, sans réécrire à chaque fois le même code de mise en forme.
+**rooter-lib** est une bibliothèque Python que j'ai développée pour répondre à un besoin récurrent dans mes projets terminal : afficher des informations de manière **lisible et esthétique**, sans réécrire à chaque fois le même code de mise en forme.
 
-Plutôt que de manipuler directement les codes d'échappement ANSI (peu lisibles, faciles à casser), rooter propose une **syntaxe par balises** — proche du HTML — et un ensemble de composants prêts à l'emploi : panneaux, tableaux, menus, invites de saisie, barres de progression. Le tout est regroupé dans une API cohérente, pensée pour être réutilisée d'un projet à l'autre.
+Plutôt que de manipuler directement les codes d'échappement ANSI (peu lisibles, faciles à casser), rooter-lib propose une **syntaxe par balises** — proche du HTML — et un ensemble de composants prêts à l'emploi : panneaux, tableaux, menus, invites de saisie, barres de progression. Le tout est regroupé dans une API cohérente, pensée pour être réutilisée d'un projet à l'autre.
 
 C'est un projet **personnel et pédagogique** : l'objectif n'était pas de concurrencer des bibliothèques établies comme `rich`, mais de **comprendre en profondeur** comment fonctionne le formatage terminal en le reconstruisant moi-même, de la gestion des couleurs jusqu'au rendu des composants.
 
@@ -79,8 +79,8 @@ C'est un projet **personnel et pédagogique** : l'objectif n'était pas de concu
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/mg-root/rooter.git
-cd rooter
+git clone https://github.com/mg-root/rooter-lib.git
+cd rooter-lib
 pip install .
 ```
 
@@ -98,10 +98,10 @@ from rooter.panel import Panel
 print("<green>Installation</> <bold>terminée</> avec succès !")
 
 # Un panneau encadré
-print(Panel(title="Bienvenue", text="Premier pas avec rooter", color="cyan"))
+print(Panel(title="Bienvenue", text="Premier pas avec rooter-lib", color="cyan"))
 ```
 
-Le `print` de rooter remplace celui de Python : il interprète les balises, mais colore aussi automatiquement les booléens, les nombres et `None`.
+Le `print` de rooter-lib remplace celui de Python : il interprète les balises, mais colore aussi automatiquement les booléens, les nombres et `None`.
 
 ---
 
